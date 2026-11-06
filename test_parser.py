@@ -14,7 +14,11 @@ from lexer import AnalizadorLexico
 from parser import parsear_tokens
 from exportar_syn import arbol_derivacion, exportar_syn, parsear_codigo
 
-CARPETA_EJEMPLOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ejemplos")
+_AQUI = os.path.dirname(os.path.abspath(__file__))
+# los .pse pueden estar en ejemplos/ o en la misma carpeta que este archivo
+CARPETA_EJEMPLOS = os.path.join(_AQUI, "ejemplos")
+if not os.path.isdir(CARPETA_EJEMPLOS):
+    CARPETA_EJEMPLOS = _AQUI
 
 
 def analizar(codigo: str):
