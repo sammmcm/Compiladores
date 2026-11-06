@@ -1,0 +1,15 @@
+nombre = "Ana";
+edad = 20;
+edad = "veinte";
+x = nombre * 2;
+si (edad) {
+    escribir(y);
+}
+mitad = edad / 0;
+r = doble(edad, 1);
+retornar edad;
+funcion doble(a) {
+    retornar a * 2;
+}
+ok = verdadero < falso;
+c = nombre == edad;

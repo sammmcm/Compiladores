@@ -1,0 +1,14 @@
+x = 10;
+funcion f(a, a) {
+    x = "local";
+    local = a + 1;
+    retornar local;
+}
+funcion f(b) {
+    retornar b;
+}
+escribir(local);
+z = y + 1;
+w = z * 2;
+d = 7 / 2;
+d = 5;

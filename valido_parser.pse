@@ -1,0 +1,22 @@
+// Promedio de calificaciones con funcion y alcance local
+total = 0;
+n = 3;
+aprobado = falso;
+
+funcion promedio(suma, cantidad) {
+    resultado = suma / cantidad;
+    retornar resultado;
+}
+
+para (i = 1; i <= n; i = i + 1) {
+    leer(calif);
+    total = total + calif;
+}
+
+prom = promedio(total, n);
+si (prom >= 70) {
+    aprobado = verdadero;
+    escribir("Aprobado");
+} sino {
+    escribir("Reprobado");
+}
