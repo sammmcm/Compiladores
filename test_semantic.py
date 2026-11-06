@@ -15,7 +15,7 @@ from lexer import AnalizadorLexico
 from parser import parsear_tokens
 from semantic import analizar_semantica
 
-CARPETA = os.path.dirname(os.path.abspath(__file__))
+CARPETA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ejemplos")
 
 
 def analizar(codigo: str):
@@ -210,14 +210,14 @@ class PruebasProgramasDeEjemplo(unittest.TestCase):
             return errores(f.read())
 
     def test_p01_valido(self):
-        self.assertEqual(self.correr("valido.pse"), [])
+        self.assertEqual(self.correr("valido_semantic.pse"), [])
 
     def test_p02_errores_de_tipos(self):
-        self.assertEqual([l for l, _ in self.correr("errores.pse")],
+        self.assertEqual([l for l, _ in self.correr("errores_semantic.pse")],
                          [3, 4, 5, 6, 8, 9, 10, 14, 15])
 
     def test_p03_errores_de_alcance(self):
-        self.assertEqual(self.correr("alcances.pse"), [
+        self.assertEqual(self.correr("alcances_semantic.pse"), [
             (7, "Función 'f' ya fue declarada en la línea 2"),
             (2, "Parámetro 'a' repetido en la función 'f'"),
             (10, "Variable 'local' no declarada"),
