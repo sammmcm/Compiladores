@@ -1,0 +1,5 @@
+x = 3.;
+y = @ + 2;
+msg = "hola mundo;
+z = 7abc * 1.5e-3;
+total = x $ y;

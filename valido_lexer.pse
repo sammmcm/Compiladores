@@ -1,0 +1,12 @@
+// Calcula el factorial y lo imprime
+funcion factorial(n) {
+    r = 1;
+    para (i = 1; i <= n; i = i + 1) {
+        r = r * i;
+    }
+    retornar r;
+}
+
+x = 5;
+escribir("Factorial: ");
+escribir(factorial(x));
