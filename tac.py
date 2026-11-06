@@ -8,7 +8,11 @@ para ejecutar el TAC y comprobar que el resultado es correcto.
 
 Uso:
     python tac.py entrada.pse            (muestra TAC original, optimizado y la ejecucion)
+
+Tambien lo usa main.py, que escribe el TAC y el TAC optimizado en <base>.tac y <base>.opt
+(JSON, ver exportar_tac) y despues ejecuta el programa.
 """
+import json
 import sys
 from dataclasses import dataclass
 
@@ -78,6 +82,33 @@ def _fmt(x):
             return '"' + v + '"'
         return repr(v)
     return str(x)
+
+
+# --------------------- Exportacion a JSON (.tac y .opt) ---------------------
+def _operando_json(x):
+    """Un operando listo para JSON: las constantes se marcan para no confundirlas con variables."""
+    if isinstance(x, Const):
+        return {"constante": x.valor}
+    return x  # nombre (str), numero, lista de parametros o None
+
+
+def cuadruplo_a_dict(c: Cuadruplo) -> dict:
+    return {
+        "op": c.op,
+        "arg1": _operando_json(c.arg1),
+        "arg2": _operando_json(c.arg2),
+        "res": _operando_json(c.res),
+        "texto": str(c).strip(),  # la misma linea que muestra listar()
+    }
+
+
+def exportar_tac(codigo, ruta: str, **extra) -> None:
+    """Guarda una lista de cuadruplos en un archivo JSON (.tac o .opt) con los campos
+    exito, total_instrucciones, los datos extra que se pasen e instrucciones."""
+    datos = {"exito": True, "total_instrucciones": len(codigo), **extra,
+             "instrucciones": [{"indice": i, **cuadruplo_a_dict(c)} for i, c in enumerate(codigo, 1)]}
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump(datos, f, ensure_ascii=False, indent=2)
 
 
 # --------------------- Generador ---------------------
@@ -292,8 +323,24 @@ def _eliminar_temporales_muertos(codigo):
 
 
 # --------------------- Interprete ----------------------------
+def _leer_teclado():
+    """Lee un valor del teclado y lo convierte al tipo que parece: entero, decimal,
+    booleano (verdadero / falso) o cadena."""
+    texto = input("? ").strip()
+    for convertir in (int, float):
+        try:
+            return convertir(texto)
+        except ValueError:
+            pass
+    if texto in ("verdadero", "falso"):
+        return texto == "verdadero"
+    return texto
+
+
 def ejecutar(codigo, entrada=None, salida=print):
-    entrada = list(entrada or [])
+    """Ejecuta el TAC. Con entrada=None, leer(x) pide el valor por teclado; con una lista,
+    toma los valores de ella en orden (asi lo usan las pruebas)."""
+    entrada = None if entrada is None else list(entrada)
     funcs, etiquetas = {}, {}
     for i, c in enumerate(codigo):
         if c.op == "func":
@@ -334,7 +381,7 @@ def ejecutar(codigo, entrada=None, salida=print):
             elif op == "return":
                 return val(c.arg1)
             elif op == "read":
-                entorno[c.res] = entrada.pop(0)
+                entorno[c.res] = _leer_teclado() if entrada is None else entrada.pop(0)
             elif op == "write":
                 v = val(c.arg1)
                 salida(("verdadero" if v else "falso") if isinstance(v, bool) else v)

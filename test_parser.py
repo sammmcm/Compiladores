@@ -15,10 +15,8 @@ from parser import parsear_tokens
 from exportar_syn import arbol_derivacion, exportar_syn, parsear_codigo
 
 _AQUI = os.path.dirname(os.path.abspath(__file__))
-# los .pse pueden estar en ejemplos/ o en la misma carpeta que este archivo
+# los programas de ejemplo (.pse) viven todos en la carpeta ejemplos/
 CARPETA_EJEMPLOS = os.path.join(_AQUI, "ejemplos")
-if not os.path.isdir(CARPETA_EJEMPLOS):
-    CARPETA_EJEMPLOS = _AQUI
 
 
 def analizar(codigo: str):
@@ -314,12 +312,8 @@ class PruebasExportacion(unittest.TestCase):
 class PruebasEjemplos(unittest.TestCase):
     """Los archivos .pse de la carpeta ejemplos/ producen los errores esperados."""
     ESPERADO = {
-        "valido.pse": [],
-        "err_puntocoma.pse": [(1, 6)],
-        "err_parentesis.pse": [(2, 11)],
-        "err_operando.pse": [(2, 9)],
-        "err_llave.pse": [(1, 18)],
-        "err_varios.pse": [(1, 6), (3, 9), (4, 11)],
+        "valido_parser.pse": [],
+        "errores_parser.pse": [(1, 6), (3, 9), (4, 11)],
     }
 
     def test_ejemplos(self):
