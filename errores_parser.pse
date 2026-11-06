@@ -1,0 +1,7 @@
+x = 5
+escribir(x);
+y = 3 + ;
+si (x > 2 {
+    escribir("a");
+}
+z = 1;
